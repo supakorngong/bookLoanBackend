@@ -1,0 +1,88 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Customer {
+  id        Int        @id @default(autoincrement()) @map("customer_id")
+  firstName String
+  lastName  String
+  email     String     @unique
+  password  String
+  address   String
+  BookLoan  BookLoan[]
+}
+
+model Category {
+  id   Int    @id @default(autoincrement()) @map("category_id")
+  name String
+  Book Book[]
+}
+
+model Book {
+  id           Int            @id @default(autoincrement()) @map("book_id")
+  categoryId   Int            @map("category_id")
+  name         String         @unique
+  author       String
+  year         Int
+  description  String?
+  quantity     Int
+  loanTime     Int            @default(0) @map("loan_time")
+  category     Category       @relation(fields: [categoryId], references: [id])
+  BookLoanItem BookLoanItem[]
+}
+
+model Role {
+  id               Int     @id @default(autoincrement()) @map("role_id")
+  position         String  @unique
+  createLoan       Boolean
+  updateLoan       Boolean
+  readLoan         Boolean
+  createBookRecord Boolean
+  readBookRecord   Boolean
+  editBookRecord   Boolean
+  deleteBookRecord Boolean
+  readCustomerInfo Boolean
+  Staff            Staff[]
+}
+
+model Staff {
+  id       Int        @id @default(autoincrement()) @map("staff_id")
+  roleId   Int        @map("role_id")
+  name     String
+  email    String     @unique
+  password String
+  role     Role       @relation(fields: [roleId], references: [id])
+  BookLoan BookLoan[]
+}
+
+model BookLoan {
+  id           Int            @id @default(autoincrement()) @map("book_loan_id")
+  customerId   Int            @map("customer_id")
+  staffId      Int            @map("staff_id")
+  loanDate     DateTime       @default(now()) @map("loan_date")
+  returnDate   DateTime       @map("return_date")
+  isReturned   Boolean        @default(false) @map("is_returned")
+  customer     Customer       @relation(fields: [customerId], references: [id])
+  staff        Staff          @relation(fields: [staffId], references: [id])
+  bookLoanItem BookLoanItem[]
+}
+
+model BookLoanItem {
+  id         Int      @id @default(autoincrement()) @map("book_loan_item_id")
+  bookLoanId Int      @map("book_loan_id")
+  bookId     Int      @map("book_id")
+  quantity   Int
+  bookLoan   BookLoan @relation(fields: [bookLoanId], references: [id])
+  book       Book     @relation(fields: [bookId], references: [id])
+}
