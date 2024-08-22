@@ -3,5 +3,5 @@ const authenticate = require("../middleware/authenticate");
 const loanController = require("../controller/loanController");
 const loanRouter = express.Router();
 loanRouter.post("/", authenticate, loanController.creteLoan);
-loanRouter.patch("/", authenticate, loanController.updateLoan);
+loanRouter.patch("/:id", authenticate, loanController.updateLoan);
 module.exports = loanRouter;

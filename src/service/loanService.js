@@ -14,5 +14,11 @@ loanService.createLoan = (data) => {
     await tx.bookLoanItem.createMany({ data: bookWithLoanId });
   });
 };
+loanService.updateLoaById = (data) => {
+  return prisma.bookLoan.update({ where: { id: data.bookLoanId }, data: { isReturned: data.isReturned } });
+};
+loanService.findLoanById = (id) => {
+  return prisma.bookLoan.findFirst({ where: { id } });
+};
 
 module.exports = loanService;
