@@ -23,3 +23,8 @@ exports.registerCustomerSchema = yup.object({
     .required("Confirm Password is required")
     .oneOf([yup.ref("password")], "Passwords must match"),
 });
+
+exports.loginSchema = yup.object({
+  email: yup.string().required("email is required").email("this is not valid form of email"),
+  password: yup.string().required("password is required"),
+});

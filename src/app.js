@@ -5,6 +5,7 @@ const cors = require("cors");
 const authRouter = require("./router/authRoute");
 const errorMiddleware = require("./middleware/error");
 const authAdminRouter = require("./router/authAdminRoute");
+const loanRouter = require("./router/loanRoute");
 
 require("dotenv").config();
 
@@ -13,6 +14,7 @@ app.use(express.json());
 
 app.use("/auth", authRouter);
 app.use("/authAdmin", authAdminRouter);
+app.use("/loan", loanRouter);
 
 app.use(errorMiddleware);
 const port = process.env.PORT;

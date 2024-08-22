@@ -8,6 +8,13 @@ staffService.findStaffByEmail = (email) => {
     },
   });
 };
+staffService.findStaffById = (id) => {
+  return prisma.staff.findFirst({
+    where: {
+      id,
+    },
+  });
+};
 staffService.createStaff = (data) => {
   return prisma.staff.create({ data });
 };
