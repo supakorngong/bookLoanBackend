@@ -59,7 +59,7 @@ adminController.login = async (req, res, next) => {
 
     //check password
     const isMatched = await hashService.comparePassword(staff.password, isExist.password);
-    //
+
     if (!isMatched) {
       createError({ message: "this password is not correct", statusCode: 400 });
     }

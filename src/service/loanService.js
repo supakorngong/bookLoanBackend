@@ -27,6 +27,7 @@ loanService.updateLoaById = (data) => {
 loanService.findAllLoan = (id) => {
   return prisma.bookLoan.findMany({});
 };
+
 loanService.findLoanById = (id) => {
   return prisma.bookLoan.findFirst({ where: { id } });
 };

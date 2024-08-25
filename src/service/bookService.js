@@ -13,6 +13,10 @@ bookService.findBookById = (id) => {
   return prisma.book.findFirst({ where: { id } });
 };
 
+bookService.findBookInLoan = (id) => {
+  return prisma.book.findMany({ where: { id: { in: id } } });
+};
+
 bookService.getAllBook = () => {
   return prisma.book.findMany({});
 };

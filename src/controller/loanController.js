@@ -1,4 +1,4 @@
-const { bookLoan } = require("../model/prisma");
+const bookService = require("../service/bookService");
 const loanService = require("../service/loanService");
 const createError = require("../utils/createError");
 const { toIso, toDateTime } = require("../utils/dateTimeConvert");
@@ -9,9 +9,21 @@ loanController.creteLoan = async (req, res, next) => {
   try {
     const staff = req.user;
     const loanInfo = req.body;
+    const booksId = loanInfo.books.map((el) => el.bookId);
+
+    const allBooksInLoan = await bookService.findBookInLoan(booksId);
+    const isAvailable = allBooksInLoan.filter((el) => el.isDelete);
+
+    if (isAvailable.length) {
+      const unAvailableBook = isAvailable.map((el) => el.name);
+      res.status(400).json({ message: `${unAvailableBook} is not available` });
+    }
+
     loanInfo.returnDate = toIso(loanInfo.returnDate);
     const data = { staffId: staff.id, ...loanInfo };
+
     await loanService.createLoan(data);
+
     res.status(200).json({ message: "loan success" });
   } catch (err) {
     next(err);
