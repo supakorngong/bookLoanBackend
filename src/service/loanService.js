@@ -13,13 +13,15 @@ loanService.createLoan = (data) => {
     const bookWithLoanId = data.books.map((el) => ({ ...el, bookLoanId: loan.id }));
 
     await tx.bookLoanItem.createMany({ data: bookWithLoanId });
-    const bookId = data.books.map((el) => el.bookId);
 
     const updateBook = data.books.map((el) => tx.book.update({ where: { id: el.bookId }, data: { loanTime: { increment: el.quantity } } }));
 
-    await Promise.all(updateBook);
+    const updatedQuantity = data.books.map((el) => tx.book.update({ where: { id: el.bookId }, data: { quantity: { decrement: el.quantity } } }));
+
+    await Promise.all([...updateBook, ...updatedQuantity]);
   });
 };
+
 loanService.updateLoaById = (data) => {
   return prisma.bookLoan.update({ where: { id: data.bookLoanId }, data: { isReturned: data.isReturned } });
 };

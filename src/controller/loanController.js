@@ -12,11 +12,16 @@ loanController.creteLoan = async (req, res, next) => {
     const booksId = loanInfo.books.map((el) => el.bookId);
 
     const allBooksInLoan = await bookService.findBookInLoan(booksId);
-    const isAvailable = allBooksInLoan.filter((el) => el.isDelete);
+    const isExist = allBooksInLoan.filter((el) => el.isDelete);
+    const isAvailable = allBooksInLoan.filter((el) => el.quantity <= 0);
 
+    if (isExist.length) {
+      const deletedBook = isExist.map((el) => el.name);
+      createError({ message: `${deletedBook} is removed` });
+    }
     if (isAvailable.length) {
       const unAvailableBook = isAvailable.map((el) => el.name);
-      res.status(400).json({ message: `${unAvailableBook} is not available` });
+      createError({ message: `${unAvailableBook} is unAvailable` });
     }
 
     loanInfo.returnDate = toIso(loanInfo.returnDate);
