@@ -13,10 +13,10 @@ const authenticate = async (req, res, next) => {
 
     const foundUser = await staffService.findStaffById(payLoad.id);
     if (!foundUser) {
-      createError({ message: "user not found", statusCode: 400 });
+      createError({ message: "user not found", statusCode: 200 });
     }
     if (foundUser.roleId !== 1) {
-      createError({ message: "you are not an employee", statusCode: 401 });
+      createError({ message: "you are not an employee", statusCode: 403 });
     }
     delete foundUser.password;
 

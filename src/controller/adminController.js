@@ -51,10 +51,10 @@ adminController.login = async (req, res, next) => {
     const isExist = await staffService.findStaffByEmail(staff.email);
     //
     if (!isExist) {
-      createError({ message: "this email is not found", statusCode: 400 });
+      createError({ message: "this email is not found", statusCode: 200 });
     }
     if (isExist.roleId !== 2) {
-      createError({ message: "you are not an admin", statusCode: 401 });
+      createError({ message: "you are not an admin", statusCode: 403 });
     }
 
     //check password

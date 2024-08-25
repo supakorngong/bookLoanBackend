@@ -14,7 +14,7 @@ const checkRole = async (req, res, next) => {
 
     const foundUser = await staffService.findStaffById(payLoad.id);
     if (!foundUser) {
-      createError({ message: "user not found", statusCode: 400 });
+      createError({ message: "user not found", statusCode: 200 });
     }
     delete foundUser.password;
     req.user = foundUser;

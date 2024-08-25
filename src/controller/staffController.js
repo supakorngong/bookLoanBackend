@@ -31,10 +31,10 @@ staffController.login = async (req, res, next) => {
     const isExist = await staffService.findStaffByEmail(staff.email);
     //
     if (!isExist) {
-      createError({ message: "this email is not found", statusCode: 400 });
+      createError({ message: "this email is not found", statusCode: 200 });
     }
     if (isExist.roleId !== 1) {
-      createError({ message: "you are not an employee", statusCode: 401 });
+      createError({ message: "you are not an employee", statusCode: 403 });
     }
 
     //check password
@@ -63,23 +63,3 @@ staffController.refreshToken = async (req, res, next) => {
   }
 };
 module.exports = staffController;
-
-// staffController.register = async (req, res, next) => {
-//   try {
-//     const infoStaff = req.input;
-//     const isExist = await staffService.findStaffByEmail(infoStaff.email);
-
-//     if (isExist) {
-//       createError({ message: "this email already registered", statusCode: 409 });
-//     }
-//     if (infoStaff.roleId !== 1) createError({ message: "your role Id is not correct ", statusCode: 400 });
-
-//     infoStaff.password = await hashService.hashPassword(infoStaff.password);
-
-//     await staffService.createStaff(infoStaff);
-
-//     res.status(200).json({ message: "registered success" });
-//   } catch (err) {
-//     next(err);
-//   }
-// };

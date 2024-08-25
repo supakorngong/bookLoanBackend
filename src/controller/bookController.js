@@ -16,7 +16,7 @@ bookController.addNewBook = async (req, res, next) => {
     const staffData = req.user;
     const bookData = req.body;
     if (!staffData.role.createBookRecord) {
-      createError({ message: "not authorized", statusCode: 401 });
+      createError({ message: "not authorized", statusCode: 403 });
     }
     await bookService.createNewBook(bookData.books);
     res.status(200).json({ message: "add success " });
@@ -30,12 +30,12 @@ bookController.updateBookData = async (req, res, next) => {
     const bookId = req.params.id;
     const bookData = req.body;
     if (!staffData.role.editBookRecord) {
-      createError({ message: "not authorized", statusCode: 401 });
+      createError({ message: "not authorized", statusCode: 403 });
     }
 
     const isExist = await bookService.findBookById(+bookId);
     if (!isExist) {
-      createError({ message: "this book is not exist", statusCode: 404 });
+      createError({ message: "this book is not exist", statusCode: 200 });
     }
     const updatedBook = await bookService.updateBookData(+bookId, bookData);
     res.status(200).json({ message: "update success", updatedBook });
@@ -48,12 +48,12 @@ bookController.deleteBook = async (req, res, next) => {
     const staffData = req.user;
     const bookId = req.params.id;
     if (!staffData.role.deleteBookRecord) {
-      createError({ message: "not authorized", statusCode: 401 });
+      createError({ message: "not authorized", statusCode: 403 });
     }
 
     const isExist = await bookService.findBookById(+bookId);
     if (!isExist) {
-      createError({ message: "this book is not exist", statusCode: 404 });
+      createError({ message: "this book is not exist", statusCode: 200 });
     }
     await bookService.deleteBook(+bookId);
     res.status(200).json({ message: "delete success" });
@@ -66,7 +66,7 @@ bookController.getAllBook = async (req, res, next) => {
   try {
     const staffData = req.user;
     if (!staffData.role.readBookRecord) {
-      createError({ message: "not authorized", statusCode: 401 });
+      createError({ message: "not authorized", statusCode: 403 });
     }
     const allBook = await bookService.getAllBook();
     res.status(200).json(allBook);
@@ -78,7 +78,7 @@ bookController.searchBookByKeyword = async (req, res, next) => {
   try {
     const staffData = req.user;
     if (!staffData.role.readBookRecord) {
-      createError({ message: "not authorized", statusCode: 401 });
+      createError({ message: "not authorized", statusCode: 403 });
     }
     const data = req.query;
 
@@ -102,7 +102,7 @@ bookController.findBookByCategory = async (req, res, next) => {
   try {
     const staffData = req.user;
     if (!staffData.role.readBookRecord) {
-      createError({ message: "not authorized", statusCode: 401 });
+      createError({ message: "not authorized", statusCode: 403 });
     }
     const data = req.body.search;
     const searchedBooks = await bookService.findBookByCategory(data);
