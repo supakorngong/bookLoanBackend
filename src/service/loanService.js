@@ -23,6 +23,10 @@ loanService.createLoan = (data) => {
 loanService.updateLoaById = (data) => {
   return prisma.bookLoan.update({ where: { id: data.bookLoanId }, data: { isReturned: data.isReturned } });
 };
+
+loanService.findAllLoan = (id) => {
+  return prisma.bookLoan.findMany({});
+};
 loanService.findLoanById = (id) => {
   return prisma.bookLoan.findFirst({ where: { id } });
 };

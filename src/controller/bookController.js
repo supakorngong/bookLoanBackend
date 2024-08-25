@@ -18,7 +18,6 @@ bookController.addNewBook = async (req, res, next) => {
     if (!staffData.role.createBookRecord) {
       createError({ message: "not authorized", statusCode: 401 });
     }
-    // console.log(bookData);
     await bookService.createNewBook(bookData.books);
     res.status(200).json({ message: "add success " });
   } catch (err) {
@@ -33,7 +32,7 @@ bookController.updateBookData = async (req, res, next) => {
     if (!staffData.role.editBookRecord) {
       createError({ message: "not authorized", statusCode: 401 });
     }
-    // console.log(bookData);
+
     const isExist = await bookService.findBookById(+bookId);
     if (!isExist) {
       createError({ message: "this book is not exist", statusCode: 404 });
@@ -51,7 +50,7 @@ bookController.deleteBook = async (req, res, next) => {
     if (!staffData.role.deleteBookRecord) {
       createError({ message: "not authorized", statusCode: 401 });
     }
-    // console.log(bookData);
+
     const isExist = await bookService.findBookById(+bookId);
     if (!isExist) {
       createError({ message: "this book is not exist", statusCode: 404 });
@@ -99,32 +98,6 @@ bookController.searchBookByKeyword = async (req, res, next) => {
   }
 };
 
-// bookController.findBookByName = async (req, res, next) => {
-//   try {
-//     const staffData = req.user;
-//     if (!staffData.role.readBookRecord) {
-//       createError({ message: "not authorized", statusCode: 401 });
-//     }
-//     const data = req.body.search;
-//     const searchedBooks = await bookService.findBookByName(data);
-//     res.status(200).json(searchedBooks);
-//   } catch (err) {
-//     next(err);
-//   }
-// };
-// bookController.findBookByAuthor = async (req, res, next) => {
-//   try {
-//     const staffData = req.user;
-//     if (!staffData.role.readBookRecord) {
-//       createError({ message: "not authorized", statusCode: 401 });
-//     }
-//     const data = req.body.search;
-//     const searchedBooks = await bookService.findBookByAuthor(data);
-//     res.status(200).json(searchedBooks);
-//   } catch (err) {
-//     next(err);
-//   }
-// };
 bookController.findBookByCategory = async (req, res, next) => {
   try {
     const staffData = req.user;

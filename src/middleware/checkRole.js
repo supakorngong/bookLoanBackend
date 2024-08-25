@@ -9,7 +9,7 @@ const checkRole = async (req, res, next) => {
       createError({ message: "unauthorized", statusCode: 401 });
     }
     const token = authorization.split(" ")[1];
-    console.log(token);
+
     const payLoad = jwtService.verify(token);
 
     const foundUser = await staffService.findStaffById(payLoad.id);

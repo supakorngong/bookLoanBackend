@@ -2,7 +2,7 @@ const jwtService = require("../service/jwtService");
 const staffService = require("../service/staffService");
 const createError = require("../utils/createError");
 
-const authenticate = async (req, res, next) => {
+const adminAuthenticate = async (req, res, next) => {
   try {
     const authorization = req.headers.authorization;
     if (!authorization || !authorization.startsWith("Bearer ")) {
@@ -27,4 +27,4 @@ const authenticate = async (req, res, next) => {
     next(err);
   }
 };
-module.exports = authenticate;
+module.exports = adminAuthenticate;

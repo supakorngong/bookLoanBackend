@@ -4,10 +4,10 @@ const { registerSchema, registerCustomerSchema, loginSchema } = require("../vali
 exports.registerValidator = async (req, res, next) => {
   try {
     const data = req.body;
-    const staffData = req.user;
-    if (staffData.roleId !== 2) {
-      createError({ message: "Not Authorized", statusCode: 401 });
-    }
+    // const staffData = req.user;
+    // if (staffData.roleId !== 2) {
+    //   createError({ message: "Not Authorized", statusCode: 401 });
+    // }
     await registerSchema.validate(req.body);
     const { confirmPassword, ...information } = data;
     req.input = information;
@@ -20,10 +20,6 @@ exports.registerValidator = async (req, res, next) => {
 exports.registerCustomerValidator = async (req, res, next) => {
   try {
     const data = req.body;
-    const staffData = req.user;
-    if (staffData.roleId !== 1) {
-      createError({ message: "Not Authorized", statusCode: 401 });
-    }
     await registerCustomerSchema.validate(req.body);
     const { confirmPassword, ...information } = data;
     req.input = information;

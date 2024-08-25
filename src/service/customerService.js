@@ -8,4 +8,10 @@ customerService.findCustomerByEmail = (email) => {
     },
   });
 };
+customerService.findAllCustomer = () => {
+  return prisma.customer.findMany({});
+};
+customerService.findCustomerById = (id) => {
+  return prisma.customer.findFirst({ where: { id } });
+};
 module.exports = customerService;

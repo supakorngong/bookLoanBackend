@@ -8,6 +8,7 @@ const loanRouter = require("./router/loanRoute");
 const bookRouter = require("./router/bookRoute");
 const checkRole = require("./middleware/checkRole");
 const categoryRouter = require("./router/categoryRoute");
+const customerRouter = require("./router/customerRoute");
 
 require("dotenv").config();
 
@@ -19,8 +20,10 @@ app.use("/authAdmin", authAdminRouter);
 app.use("/loan", loanRouter);
 app.use("/book", bookRouter);
 app.use("/category", checkRole, categoryRouter);
+app.use("/customer", checkRole, customerRouter);
 
 app.use(errorMiddleware);
+
 const port = process.env.PORT;
 
 app.listen(port, console.log(`running on ${port}`));
