@@ -5,9 +5,9 @@ const authenticate = require("../middleware/authenticate");
 const checkRole = require("../middleware/checkRole");
 const authRouter = express.Router();
 
-authRouter.post("/register", registerValidator, staffController.register);
+// authRouter.post("/register", registerValidator, staffController.register);
 
-authRouter.post("/register/customer", registerCustomerValidator, staffController.registerCustomer);
+authRouter.post("/register/customer", checkRole, registerCustomerValidator, staffController.registerCustomer);
 
 authRouter.post("/login", loginValidator, staffController.login);
 

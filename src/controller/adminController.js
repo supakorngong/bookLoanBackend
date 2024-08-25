@@ -24,6 +24,26 @@ adminController.register = async (req, res, next) => {
   }
 };
 
+adminController.registerEmployee = async (req, res, next) => {
+  try {
+    const infoStaff = req.input;
+    const isExist = await staffService.findStaffByEmail(infoStaff.email);
+
+    if (isExist) {
+      createError({ message: "this email already registered", statusCode: 409 });
+    }
+    if (infoStaff.roleId !== 1) createError({ message: "your role Id is not correct ", statusCode: 400 });
+
+    infoStaff.password = await hashService.hashPassword(infoStaff.password);
+
+    await staffService.createStaff(infoStaff);
+
+    res.status(200).json({ message: "registered success" });
+  } catch (err) {
+    next(err);
+  }
+};
+
 adminController.login = async (req, res, next) => {
   try {
     const staff = req.user;
