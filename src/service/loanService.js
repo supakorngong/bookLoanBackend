@@ -11,7 +11,13 @@ loanService.createLoan = (data) => {
       },
     });
     const bookWithLoanId = data.books.map((el) => ({ ...el, bookLoanId: loan.id }));
+
     await tx.bookLoanItem.createMany({ data: bookWithLoanId });
+    const bookId = data.books.map((el) => el.bookId);
+
+    const updateBook = data.books.map((el) => tx.book.update({ where: { id: el.bookId }, data: { loanTime: { increment: el.quantity } } }));
+
+    await Promise.all(updateBook);
   });
 };
 loanService.updateLoaById = (data) => {

@@ -38,6 +38,7 @@ model Book {
   description  String?
   quantity     Int
   loanTime     Int            @default(0) @map("loan_time")
+  isDelete     Boolean        @default(false)
   category     Category       @relation(fields: [categoryId], references: [id])
   BookLoanItem BookLoanItem[]
 }

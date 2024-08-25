@@ -1,11 +1,13 @@
 const express = require("express");
 const app = express();
 const cors = require("cors");
-1;
 const authRouter = require("./router/authRoute");
 const errorMiddleware = require("./middleware/error");
 const authAdminRouter = require("./router/authAdminRoute");
 const loanRouter = require("./router/loanRoute");
+const bookRouter = require("./router/bookRoute");
+const checkRole = require("./middleware/checkRole");
+const categoryRouter = require("./router/categoryRoute");
 
 require("dotenv").config();
 
@@ -15,8 +17,10 @@ app.use(express.json());
 app.use("/auth", authRouter);
 app.use("/authAdmin", authAdminRouter);
 app.use("/loan", loanRouter);
+app.use("/book", bookRouter);
+app.use("/category", checkRole, categoryRouter);
 
 app.use(errorMiddleware);
 const port = process.env.PORT;
 
-app.listen(port, console.log(`hello from ${port}`));
+app.listen(port, console.log(`running on ${port}`));

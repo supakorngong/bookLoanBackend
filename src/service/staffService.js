@@ -13,6 +13,7 @@ staffService.findStaffById = (id) => {
     where: {
       id,
     },
+    include: { role: true },
   });
 };
 staffService.createStaff = (data) => {

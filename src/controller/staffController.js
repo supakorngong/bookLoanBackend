@@ -75,7 +75,7 @@ staffController.refreshToken = async (req, res, next) => {
   try {
     const staff = req.user;
     const accessToken = jwtService.sign({ id: staff.id });
-    const refreshToken = jwtService.sign({ id: staff.id });
+    const refreshToken = jwtService.signRefresh({ id: staff.id });
     res.json({ accessToken, refreshToken });
   } catch (err) {
     next(err);

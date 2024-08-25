@@ -3,6 +3,8 @@ const { registerSchema, registerCustomerSchema, loginSchema } = require("../vali
 exports.registerValidator = async (req, res, next) => {
   try {
     const data = req.body;
+    const staffData = req.user;
+    // if()
     await registerSchema.validate(req.body);
     const { confirmPassword, ...information } = data;
     req.input = information;

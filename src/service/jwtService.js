@@ -1,8 +1,9 @@
 const jwt = require("jsonwebtoken");
 const jwtService = {};
 
-jwtService.sign = (payload) => jwt.sign(payload, process.env.secret_key, { expiresIn: "3m" });
+jwtService.sign = (payload) => jwt.sign(payload, process.env.secret_key, { expiresIn: "10m" });
 jwtService.signRefresh = (payload) => jwt.sign(payload, process.env.secret_key, { expiresIn: "1h" });
 jwtService.verify = (token) => jwt.verify(token, process.env.secret_key);
+// jwtService.refreshVerify = (token) => jwt.verify(token, process.env.refresh_secret_key);
 
 module.exports = jwtService;

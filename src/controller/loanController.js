@@ -3,6 +3,7 @@ const loanService = require("../service/loanService");
 const createError = require("../utils/createError");
 
 const loanController = {};
+
 loanController.creteLoan = async (req, res, next) => {
   try {
     const staff = req.user;
@@ -10,12 +11,13 @@ loanController.creteLoan = async (req, res, next) => {
     const date = new Date(loanInfo.returnDate);
     loanInfo.returnDate = date.toISOString();
     const data = { staffId: staff.id, ...loanInfo };
-    const response = await loanService.createLoan(data);
-    res.status(200).json({ message: response });
+    await loanService.createLoan(data);
+    res.status(200).json({ message: "loan success" });
   } catch (err) {
     next(err);
   }
 };
+
 loanController.updateLoan = async (req, res, next) => {
   try {
     const loanId = req.params;
@@ -25,7 +27,7 @@ loanController.updateLoan = async (req, res, next) => {
     }
     const data = { bookLoanId: +loanId.id, isReturned: req.body.isReturned };
     const response = await loanService.updateLoaById(data);
-    //เเก้ไข สถานะ การยืมเท่านั้น
+
     res.status(200).json({ message: response });
   } catch (err) {
     next(err);
