@@ -1,4 +1,3 @@
-const createError = require("../utils/createError");
 const { registerSchema, registerCustomerSchema, loginSchema } = require("../validator/authValidator");
 
 exports.registerValidator = async (req, res, next) => {
