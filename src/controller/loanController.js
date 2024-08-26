@@ -15,10 +15,20 @@ loanController.creteLoan = async (req, res, next) => {
     const isExist = allBooksInLoan.filter((el) => el.isDelete);
     const isAvailable = allBooksInLoan.filter((el) => el.quantity <= 0);
 
+    const sortedId = loanInfo.books.sort((a, b) => a.bookId - b.bookId);
+    const checkQuantity = allBooksInLoan.filter((el, index) => el.quantity < sortedId[index].quantity);
+
+    if (checkQuantity.length) {
+      const lackedBook = checkQuantity.map((el) => el.name);
+      createError({ message: `${lackedBook} is not enough to loan` });
+    }
+
     if (isExist.length) {
       const deletedBook = isExist.map((el) => el.name);
-      createError({ message: `${deletedBook} is removed` });
+      const deletedBookId = isExist.map((el) => el.id);
+      createError({ message: `bookId : ${deletedBookId} name : ${deletedBook} is removed` });
     }
+
     if (isAvailable.length) {
       const unAvailableBook = isAvailable.map((el) => el.name);
       createError({ message: `${unAvailableBook} is unAvailable` });
@@ -42,10 +52,13 @@ loanController.updateLoan = async (req, res, next) => {
     if (!isExist) {
       createError({ message: "this loan is not existed", statusCode: 200 });
     }
+    if (isExist.isReturned) {
+      createError({ message: "this book is already returned", statusCode: 409 });
+    }
     const data = { bookLoanId: +loanId.id, isReturned: req.body.isReturned };
-    const response = await loanService.updateLoaById(data);
+    await loanService.updateLoaById(data);
 
-    res.status(200).json({ message: response });
+    res.status(200).json({ message: "return success" });
   } catch (err) {
     next(err);
   }
@@ -60,6 +73,7 @@ loanController.getAllLoan = async (req, res, next) => {
     next(err);
   }
 };
+
 loanController.getLoanById = async (req, res, next) => {
   try {
     const loanId = req.params.id;

@@ -23,7 +23,12 @@ loanService.createLoan = (data) => {
 };
 
 loanService.updateLoaById = (data) => {
-  return prisma.bookLoan.update({ where: { id: data.bookLoanId }, data: { isReturned: data.isReturned } });
+  return prisma.$transaction(async (tx) => {
+    await tx.bookLoan.update({ where: { id: data.bookLoanId }, data: { isReturned: data.isReturned } });
+    const bookLoanItem = await tx.bookLoanItem.findMany({ where: { bookLoanId: data.bookLoanId } });
+    const updateQuantity = bookLoanItem.map((el) => tx.book.update({ where: { id: el.bookId }, data: { quantity: { increment: el.quantity } } }));
+    await Promise.all(updateQuantity);
+  });
 };
 
 loanService.findAllLoan = (id) => {

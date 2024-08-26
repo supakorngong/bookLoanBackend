@@ -9,6 +9,7 @@ const bookRouter = require("./router/bookRoute");
 const checkRole = require("./middleware/checkRole");
 const categoryRouter = require("./router/categoryRoute");
 const customerRouter = require("./router/customerRoute");
+const loanItemRouter = require("./router/loanItemRoute");
 
 require("dotenv").config();
 
@@ -18,6 +19,7 @@ app.use(express.json());
 app.use("/auth", authRouter);
 app.use("/authAdmin", authAdminRouter);
 app.use("/loan", loanRouter);
+app.use("/loanItem", loanItemRouter);
 app.use("/book", bookRouter);
 app.use("/category", checkRole, categoryRouter);
 app.use("/customer", checkRole, customerRouter);
